@@ -8,7 +8,7 @@ gulp.task('js', function () {
   return gulp.src('./yscroll.js')
     .pipe(code.lint())
     .pipe(rename(function (path) {
-      path.basename = 'yscroll.min';
+      path.basename = path.basename + '.min';
     }))
     .pipe(code.minify())
     .pipe(gulp.dest('./'));

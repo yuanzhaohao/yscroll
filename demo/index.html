@@ -118,16 +118,20 @@ body {
   color: #333;
 }
 </style>
-<h3 class="title">default</h3>
-<div class="box">
-  <div class="fs fs-0">
-    <div class="fs-item fs-item-0">1</div>
-    <div class="fs-item fs-item-1">2</div>
-    <div class="fs-item fs-item-2">3</div>
-    <div class="fs-item fs-item-3">4</div>
-    <div class="fs-item fs-item-4">5</div>
-    <div class="fs-item fs-item-5">6</div>
-    <div class="fs-item fs-item-6">7</div>
+<h3 class="title">default: scroll nav</h3>
+<div class="scroll">
+  <div class="scroll-nav">
+    <ul>
+      <li>时尚女装</li>
+      <li>品质男装</li>
+      <li>包包配饰</li>
+      <li>男鞋女鞋</li>
+      <li>母婴儿童</li>
+      <li>日用百货</li>
+      <li>美食特产</li>
+      <li>数码家电</li>
+      <li>美容护肤</li>
+    </ul>
   </div>
 </div>
 <h3 class="title">snap</h3>
@@ -156,32 +160,10 @@ body {
   </div>
 </div>
 <div id="snap-callback-text"></div>
-
-<h3 class="title">scroll nav</h3>
-<div class="scroll">
-  <div class="scroll-nav">
-    <ul>
-      <li>时尚女装</li>
-      <li>品质男装</li>
-      <li>包包配饰</li>
-      <li>男鞋女鞋</li>
-      <li>母婴儿童</li>
-      <li>日用百货</li>
-      <li>美食特产</li>
-      <li>数码家电</li>
-      <li>美容护肤</li>
-    </ul>
-  </div>
-</div>
 <script src="../yscroll.js"></script>
 <script>
 // scroll nav
 var scroll = new YScroll('.scroll-nav');
-
-// default
-new YScroll('.fs-0', {
-  distance: window.innerWidth
-});
 
 // snap
 new YScroll('.fs-1', {
