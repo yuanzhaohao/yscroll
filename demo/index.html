@@ -87,22 +87,17 @@ body {
   position: relative;
   width: 100%;
   height: 47px;
+  color: #999;
 }
-.scroll-container {
+.scroll-nav {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 45px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   background-color: #fafafa;
-}
-.scroll-nav {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  height: 100%;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -162,26 +157,27 @@ body {
 </div>
 <div id="snap-callback-text"></div>
 
-<h3 class="title">scroll</h3>
+<h3 class="title">scroll nav</h3>
 <div class="scroll">
-  <div class="scroll-container">
-    <div class="scroll-nav">
-      <ul>
-        <li>时尚女装</li>
-        <li>品质男装</li>
-        <li>包包配饰</li>
-        <li>男鞋女鞋</li>
-        <li>母婴儿童</li>
-        <li>日用百货</li>
-        <li>美食特产</li>
-        <li>数码家电</li>
-        <li>美容护肤</li>
-      </ul>
-    </div>
+  <div class="scroll-nav">
+    <ul>
+      <li>时尚女装</li>
+      <li>品质男装</li>
+      <li>包包配饰</li>
+      <li>男鞋女鞋</li>
+      <li>母婴儿童</li>
+      <li>日用百货</li>
+      <li>美食特产</li>
+      <li>数码家电</li>
+      <li>美容护肤</li>
+    </ul>
   </div>
 </div>
 <script src="../yscroll.js"></script>
 <script>
+// scroll nav
+var scroll = new YScroll('.scroll-nav');
+
 // default
 new YScroll('.fs-0', {
   distance: window.innerWidth

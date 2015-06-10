@@ -146,7 +146,7 @@ YScroll.prototype = {
   init: function (el, opts) {
     var self = this;
 
-    if (typeof el === 'string') {
+    if (typeof el === 'string' && el !== '') {
       el = doc.querySelector(el);
     }
 
@@ -467,12 +467,12 @@ YScroll.prototype = {
         prevPoint: curPoint,
         curPoint: self.curPoint
       });
-      setTimeout(function () {
-        self._triggerEvent('sPointAftermove', true, false, {
-          prevPoint: curPoint,
-          curPoint: self.curPoint
-        });
-      }, bounceTime + 50);
+      // setTimeout(function () {
+      //   self._triggerEvent('sPointAftermove', true, false, {
+      //     prevPoint: curPoint,
+      //     curPoint: self.curPoint
+      //   });
+      // }, bounceTime + 50);
     }
     self._scrollTo(-self.curPoint * self.distance, 0, bounceTime);
     callback && callback();
