@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=gbk">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  <meta name="author" content="yuanzhaohao@163.com">
+  <meta name="description" content="yscroll-高性能的滚动组件">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>YScroll demo</title>
+</head>
+<body>
+<style type="text/css">
+*{margin: 0; padding: 0;}
+body {
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+.title {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #555;
+  font-size: 15px;
+  font-weight: 700;
+}
+.box {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.fs {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-lines: multiple;
+}
+.fs-item {
+  width: 100%;
+  height: 200px;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  line-height: 200px;
+}
+.fs-item-0 {
+  background-color: #000;
+}
+.fs-item-1 {
+  background-color: #111;
+}
+.fs-item-2 {
+  background-color: #222;
+}
+.fs-item-3 {
+  background-color: #333;
+}
+.fs-item-4 {
+  background-color: #444;
+}
+.fs-item-5 {
+  background-color: #555;
+}
+.fs-item-6 {
+  background-color: #666;
+}
+.snap {
+  width: 320px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.fs-snap {
+  padding-left: 50px;
+}
+.fs-snap > .fs-item {
+  width: 200px;
+  margin: 0 10px;
+}
+#snap-callback-text {
+  text-align: center;
+  line-height: 19px;
+  font-size: 13px;
+  height: 19px;
+}
+
+.scroll {
+  position: relative;
+  width: 100%;
+  height: 47px;
+}
+.scroll-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 45px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  background-color: #fafafa;
+}
+.scroll-nav {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.scroll-nav > ul {
+  position: absolute;
+  left: 0;
+  list-style: none;
+}
+.scroll-nav li {
+  display: inline-block;
+  height: 42px;
+  margin: 0px 3px;
+  padding: 0px 7px;
+  padding-bottom: 3px;
+  line-height: 45px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+</style>
+<h3 class="title">default</h3>
+<div class="box">
+  <div class="fs fs-0">
+    <div class="fs-item fs-item-0">1</div>
+    <div class="fs-item fs-item-1">2</div>
+    <div class="fs-item fs-item-2">3</div>
+    <div class="fs-item fs-item-3">4</div>
+    <div class="fs-item fs-item-4">5</div>
+    <div class="fs-item fs-item-5">6</div>
+    <div class="fs-item fs-item-6">7</div>
+  </div>
+</div>
+<h3 class="title">snap</h3>
+<div class="box snap">
+  <div class="fs fs-1 fs-snap">
+    <div class="fs-item fs-item-0">1</div>
+    <div class="fs-item fs-item-1">2</div>
+    <div class="fs-item fs-item-2">3</div>
+    <div class="fs-item fs-item-3">4</div>
+    <div class="fs-item fs-item-4">5</div>
+    <div class="fs-item fs-item-5">6</div>
+    <div class="fs-item fs-item-6">7</div>
+  </div>
+</div>
+
+<h3 class="title">snap callback</h3>
+<div class="box snap">
+  <div class="fs fs-2 fs-snap">
+    <div class="fs-item fs-item-0">1</div>
+    <div class="fs-item fs-item-1">2</div>
+    <div class="fs-item fs-item-2">3</div>
+    <div class="fs-item fs-item-3">4</div>
+    <div class="fs-item fs-item-4">5</div>
+    <div class="fs-item fs-item-5">6</div>
+    <div class="fs-item fs-item-6">7</div>
+  </div>
+</div>
+<div id="snap-callback-text"></div>
+
+<h3 class="title">scroll</h3>
+<div class="scroll">
+  <div class="scroll-container">
+    <div class="scroll-nav">
+      <ul>
+        <li>时尚女装</li>
+        <li>品质男装</li>
+        <li>包包配饰</li>
+        <li>男鞋女鞋</li>
+        <li>母婴儿童</li>
+        <li>日用百货</li>
+        <li>美食特产</li>
+        <li>数码家电</li>
+        <li>美容护肤</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="../yscroll.js"></script>
+<script>
+// default
+new YScroll('.fs-0', {
+  distance: window.innerWidth
+});
+
+// snap
+new YScroll('.fs-1', {
+  distance: 220
+});
+
+// snap callback
+var snap = new YScroll('.fs-2', {
+  distance: 220
+});
+var snapEl = document.getElementById('snap-callback-text');
+snapEl.innerHTML = 'curPoint: ' + snap.curPoint;
+snap.scroller.addEventListener('sPointmove', function (e) {
+  snapEl.innerHTML = 'curPoint: ' + e.curPoint;
+}, false);
+</script>
+</body>
+</html>

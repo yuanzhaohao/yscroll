@@ -21,5 +21,9 @@ gulp.task('connect', function () {
     port: '3000'
   });
 });
+gulp.task('open', function () {
+  return gulp.src('./demo/index.html').pipe(open('', { url: 'http://localhost:3000/demo/index.html'}));
+});
 
 gulp.task('default', ['js']);
+gulp.task('server', ['connect', 'open']);
