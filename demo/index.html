@@ -159,6 +159,19 @@ body {
     <div class="fs-item fs-item-6">7</div>
   </div>
 </div>
+
+<h3 class="title">snap js animation</h3>
+<div class="box snap">
+  <div class="fs fs-3 fs-snap">
+    <div class="fs-item fs-item-0">1</div>
+    <div class="fs-item fs-item-1">2</div>
+    <div class="fs-item fs-item-2">3</div>
+    <div class="fs-item fs-item-3">4</div>
+    <div class="fs-item fs-item-4">5</div>
+    <div class="fs-item fs-item-5">6</div>
+    <div class="fs-item fs-item-6">7</div>
+  </div>
+</div>
 <div id="snap-callback-text"></div>
 <script src="../yscroll.js"></script>
 <script>
@@ -179,6 +192,12 @@ snapEl.innerHTML = 'curPoint: ' + snap.curPoint;
 snap.scroller.addEventListener('sPointmove', function (e) {
   snapEl.innerHTML = 'curPoint: ' + e.curPoint;
 }, false);
+
+// snap
+new YScroll('.fs-3', {
+  distance: 220,
+  cssAnimation: false
+});
 </script>
 </body>
 </html>

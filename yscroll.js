@@ -57,9 +57,9 @@ var utils = (function (win, doc) {
     else {
       some(prefix, function(_prefix) {
         var _prop = ucFirst(_prefix) + ucFirst(prop);
-        if (style[ _prop ] !== undefined) {
-          saveProp[ prop ] = _prop;
-          style[ _prop ] = val;
+        if (style[_prop] !== undefined) {
+          saveProp[prop] = _prop;
+          style[_prop] = val;
           return true;
         }
       });
@@ -67,7 +67,7 @@ var utils = (function (win, doc) {
   };
   var hasProp = function (props) {
     return some(props, function(prop) {
-      return div.style[ prop ] !== undefined;
+      return div.style[prop] !== undefined;
     });
   };
 
@@ -76,6 +76,28 @@ var utils = (function (win, doc) {
   self.setStyle = setStyle;
   self.saveProp = saveProp;
   self.hasProp = hasProp;
+  self.transform3d = hasProp([
+    'perspectiveProperty',
+    'WebkitPerspective',
+    'MozPerspective',
+    'OPerspective',
+    'msPerspective'
+  ]);
+  self.transform = hasProp([
+    'transformProperty',
+    'WebkitTransform',
+    'MozTransform',
+    'OTransform',
+    'msTransform'
+  ]);
+  self.transition = hasProp([
+    'transitionProperty',
+    'WebkitTransitionProperty',
+    'MozTransitionProperty',
+    'OTransitionProperty',
+    'msTransitionProperty'
+  ]);
+  self.cssAnimation = (self.transform3d || self.transform) && self.transition;
 
   self.getTriangleSide = function (x1, y1, x2, y2) {
     var x = abs(x1 - x2);
@@ -107,7 +129,7 @@ var utils = (function (win, doc) {
       destination = wrapperSize ? lowerMargin - (wrapperSize / 2.5 * (speed / 8)) : lowerMargin;
       distance = abs(destination - current);
       duration = distance / speed;
-    } 
+    }
     else if (destination > 0) {
       destination = wrapperSize ? wrapperSize / 2.5 * (speed / 8) : 0;
       distance = abs(current) + destination;
@@ -156,7 +178,7 @@ YScroll.prototype = {
     opts = opts || {};
     self.distance = opts.distance;
     self.bounceTime = opts.bounceTime || 350;
-    self.isScroll = (self.distance === undefined) ? true : false;
+    self.isScroll = (opts.distance === undefined) ? true : false;
     self.curDist = 0;
     self.gestureStart = false;
     self.events = {
@@ -166,6 +188,7 @@ YScroll.prototype = {
       cancel: 'touchcancel',
       transitionend: (utils.hasProp(['transition'])) ? 'transitionend' : 'webkitTransitionEnd'
     };
+    self.cssAnimation = (opts.cssAnimation === undefined) ? utils.cssAnimation : opts.cssAnimation;
 
     if (self.isScroll) {
       self.scroller = el.children[0];
@@ -183,12 +206,21 @@ YScroll.prototype = {
     }
     self.scrollerStyle = self.scroller.style;
 
-    self._setStyle({
-      transitionProperty: utils.getCSSVal('transform'),
-      transitionTimingFunction: self.bounceEasing,
-      transitionDuration: '0ms',
-      transform: self._getTranslate(0, 0)
-    });
+    if (self.cssAnimation) {
+      self._setStyle({
+        transitionProperty: utils.getCSSVal('transform'),
+        transitionTimingFunction: self.bounceEasing,
+        transitionDuration: '0ms',
+        transform: self._getTranslate(0, 0)
+      });
+    }
+    else {
+      self._setStyle({
+        position: 'relative',
+        left: '0px',
+        top: '0px'
+      });
+    }
     self.scroller.addEventListener(self.events.start, self, false);
     return self;
   },
@@ -313,11 +345,11 @@ YScroll.prototype = {
           time = momentum.duration;
           self.isInTransition = 1;
         }
-        
+
         if (self.basePageX != newX) {
           self._scrollTo(newX, 0, time);
           self.isInTransition = !!(time > 0);
-        } 
+        }
       }
     }
     else {
@@ -326,7 +358,6 @@ YScroll.prototype = {
         (self.direction < 0) ? Math.ceil(point) :
         (self.direction > 0) ? Math.floor(point) :
         Math.round(point);
-
       if (point < 0) {
         point = 0;
       }
@@ -431,6 +462,39 @@ YScroll.prototype = {
     self.curDist = x;
   },
 
+  _animate: function (to, transitionDuration) {
+    var self = this;
+
+    var elem = self.scroller;
+    var elemStyle = self.scroller.style;
+    var begin = +new Date();
+    var duration = parseInt(transitionDuration, 10);
+    var easing = function(time, duration) {
+      return -(time /= duration) * (time - 2);
+    };
+    var now = self._animDist;
+    var timer = setInterval(function() {
+      var time = +new Date() - begin;
+      var pos;
+
+      if (time > duration) {
+        clearInterval(timer);
+        now = to;
+        self._animDist = to;
+      }
+      else {
+        pos = easing(time, duration);
+        now = pos * (to - now) + now;
+      }
+      if (self.vertical) {
+        elemStyle.top = now + 'px';
+      }
+      else {
+        elemStyle.left = now + 'px';
+      }
+    }, 10);
+  },
+
   resetDist: function () {
     var self = this,
       curDist = self.curDist;
@@ -467,12 +531,6 @@ YScroll.prototype = {
         prevPoint: curPoint,
         curPoint: self.curPoint
       });
-      // setTimeout(function () {
-      //   self._triggerEvent('sPointAftermove', true, false, {
-      //     prevPoint: curPoint,
-      //     curPoint: self.curPoint
-      //   });
-      // }, bounceTime + 50);
     }
     self._scrollTo(-self.curPoint * self.distance, 0, bounceTime);
     callback && callback();
