@@ -249,6 +249,13 @@ YScroll.prototype = {
     self.scroller.addEventListener(self.events.move, self, false);
     doc.addEventListener(self.events.end, self, false);
 
+    if (self.cssAnimation) {
+      self._setStyle({ transitionDuration: '0ms' });
+    }
+    else {
+      self.animation = false;
+    }
+
     var touch = e.changedTouches ? e.changedTouches[0] : e;
     self._setStyle({ transitionDuration: '0ms' });
     self.startPageX = touch.pageX;
@@ -445,21 +452,33 @@ YScroll.prototype = {
   },
 
   _setDist: function (x, y) {
-    var self = this;
+    var self = this,
+      style = self.scrollerStyle,
+      dist = x;
 
-    self.scrollerStyle[ utils.saveProp.transform ] = self._getTranslate(x, y);
-    self.curDist = x;
+    if (self.cssAnimation) {
+      style[ utils.saveProp.transform ] = self._getTranslate(x, y);
+    }
+    else {
+      if (self.animation) {
+        self._animDist = self.curDist;
+        self._animate(dist, time || self.bounceTime);
+      }
+      else {
+        console.log(dist);
+        self.left = dist + 'px';
+      }
+    }
+    console.log(dist)
+    self.curDist = dist;
   },
 
   _scrollTo: function (x, y, time) {
-    var self = this,
-      style = self.scrollerStyle,
-      prop = utils.saveProp;
+    var self = this;
 
     time = time || 0;
-    style[prop.transform] = self._getTranslate(x, y);
-    style[prop.transitionDuration] = time + 'ms';
-    self.curDist = x;
+    self.scrollerStyle[utils.saveProp.transitionDuration] = time + 'ms';
+    self._setDist(x, y);
   },
 
   _animate: function (to, transitionDuration) {
