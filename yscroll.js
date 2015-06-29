@@ -252,12 +252,7 @@ YScroll.prototype = {
     if (self.cssAnimation) {
       self._setStyle({ transitionDuration: '0ms' });
     }
-    else {
-      self.animation = false;
-    }
-
     var touch = e.changedTouches ? e.changedTouches[0] : e;
-    self._setStyle({ transitionDuration: '0ms' });
     self.startPageX = touch.pageX;
     self.startPageY = touch.pageY;
     self.basePageX = self.startPageX;
@@ -343,14 +338,21 @@ YScroll.prototype = {
           duration = timeStamp - self.startTime,
           time = 0,
           newX = self.basePageX,
-          distanceX = abs(newX - self.startPageX),
-          momentum;
+          distanceX = abs(newX - self.startPageX);
 
         if (duration < 300 && distanceX > 30) {
-          momentum = utils.momentum(self.basePageX, self.startPageX, duration, self.maxDist, self.wrapperWidth, self.direction);
-          newX = momentum.destination;
-          time = momentum.duration;
+          var m = utils.momentum(self.basePageX, self.startPageX, duration, self.maxDist, self.wrapperWidth, self.direction);
+          newX = m.destination;
+          time = m.duration;
           self.isInTransition = 1;
+          if (!self.cssAnimation) {
+            if (newX >= 0) {
+              newX = 0;
+            }
+            else if (newX < self.maxDist) {
+              newX = self.maxDist;
+            }
+          }
         }
 
         if (self.basePageX != newX) {
@@ -460,16 +462,8 @@ YScroll.prototype = {
       style[ utils.saveProp.transform ] = self._getTranslate(x, y);
     }
     else {
-      if (self.animation) {
-        self._animDist = self.curDist;
-        self._animate(dist, time || self.bounceTime);
-      }
-      else {
-        console.log(dist);
-        self.left = dist + 'px';
-      }
+      style.left = dist + 'px';
     }
-    console.log(dist)
     self.curDist = dist;
   },
 
@@ -477,39 +471,46 @@ YScroll.prototype = {
     var self = this;
 
     time = time || 0;
-    self.scrollerStyle[utils.saveProp.transitionDuration] = time + 'ms';
-    self._setDist(x, y);
+    if (self.cssAnimation) {
+      self.scrollerStyle[utils.saveProp.transitionDuration] = time + 'ms';
+      self._setDist(x, y);
+    }
+    else {
+      self._animDist = self.curDist;
+      self._animate(x, time || self.bounceTime);
+      self.curDist = x;
+    }
   },
 
-  _animate: function (to, transitionDuration) {
-    var self = this;
+  _animate: function (to, time) {
+    var self = this,
+      elem = self.scroller,
+      elemStyle = self.scroller.style,
+      begin = +new Date(),
+      duration = parseInt(time, 10),
+      dist = self._animDist;
 
-    var elem = self.scroller;
-    var elemStyle = self.scroller.style;
-    var begin = +new Date();
-    var duration = parseInt(transitionDuration, 10);
     var easing = function(time, duration) {
       return -(time /= duration) * (time - 2);
     };
-    var now = self._animDist;
     var timer = setInterval(function() {
       var time = +new Date() - begin;
       var pos;
 
       if (time > duration) {
         clearInterval(timer);
-        now = to;
+        dist = to;
         self._animDist = to;
       }
       else {
         pos = easing(time, duration);
-        now = pos * (to - now) + now;
+        dist = pos * (to - dist) + dist;
       }
       if (self.vertical) {
-        elemStyle.top = now + 'px';
+        elemStyle.top = dist + 'px';
       }
       else {
-        elemStyle.left = now + 'px';
+        elemStyle.left = dist + 'px';
       }
     }, 10);
   },

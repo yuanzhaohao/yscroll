@@ -159,6 +159,7 @@ body {
     <div class="fs-item fs-item-6">7</div>
   </div>
 </div>
+<div id="snap-callback-text"></div>
 
 <h3 class="title">snap js animation</h3>
 <div class="box snap">
@@ -172,7 +173,23 @@ body {
     <div class="fs-item fs-item-6">7</div>
   </div>
 </div>
-<div id="snap-callback-text"></div>
+
+<h3 class="title">scroll nav js animation</h3>
+<div class="scroll">
+  <div class="scroll-nav scroll-nav-1">
+    <ul>
+      <li>时尚女装</li>
+      <li>品质男装</li>
+      <li>包包配饰</li>
+      <li>男鞋女鞋</li>
+      <li>母婴儿童</li>
+      <li>日用百货</li>
+      <li>美食特产</li>
+      <li>数码家电</li>
+      <li>美容护肤</li>
+    </ul>
+  </div>
+</div>
 <script src="../yscroll.js"></script>
 <script>
 // scroll nav
@@ -196,6 +213,11 @@ snap.scroller.addEventListener('sPointmove', function (e) {
 // snap
 new YScroll('.fs-3', {
   distance: 220,
+  cssAnimation: false
+});
+
+// js animation scroll
+new YScroll('.scroll-nav-1', {
   cssAnimation: false
 });
 </script>
