@@ -120,24 +120,23 @@ var utils = (function (win, doc) {
     var distance = current - start,
       speed = abs(distance) / time,
       deceleration = 0.0006,
-      destination, duration;
+      dist, duration;
 
-    destination = current + (speed * speed) / (2 * deceleration) * direction;
+    dist = current + (speed * speed) / (2 * deceleration) * direction;
     duration = speed / deceleration;
-
-    if (destination < lowerMargin) {
-      destination = wrapperSize ? lowerMargin - (wrapperSize / 2.5 * (speed / 8)) : lowerMargin;
-      distance = abs(destination - current);
+    if (dist < lowerMargin) {
+      dist = wrapperSize ? lowerMargin - (wrapperSize / 2.5 * (speed / 8)) : lowerMargin;
+      distance = abs(dist - current);
       duration = distance / speed;
     }
-    else if (destination > 0) {
-      destination = wrapperSize ? wrapperSize / 2.5 * (speed / 8) : 0;
-      distance = abs(current) + destination;
+    else if (dist > 0) {
+      dist = wrapperSize ? wrapperSize / 2.5 * (speed / 8) : 0;
+      distance = abs(current) + dist;
       duration = distance / speed;
     }
 
     return {
-      destination: round(destination),
+      dist: round(dist),
       duration: duration
     };
   };
@@ -284,15 +283,16 @@ YScroll.prototype = {
         newDist = round(self.curDist + delta / 3);
       }
 
-      self.direction =
-        delta === 0 ? self.direction :
-        delta > 0 ? 1 : -1;
+      // self.direction =
+      //   delta === 0 ? self.direction :
+      //   delta > 0 ? 1 : -1;
 
+      var direction = (delta > 0) ? 1 : -1;
       var isPrevent = !self._triggerEvent('sTouchmove', true, true, {
         delta: delta,
-        direction: self.direction
+        direction: direction
       });
-
+      self.direction = direction;
       if (isPrevent) {
         self._touchAfter({
           moved: false,
@@ -342,7 +342,7 @@ YScroll.prototype = {
 
         if (duration < 300 && distanceX > 30) {
           var m = utils.momentum(self.basePageX, self.startPageX, duration, self.maxDist, self.wrapperWidth, self.direction);
-          newX = m.destination;
+          newX = m.dist;
           time = m.duration;
           self.isInTransition = 1;
           if (!self.cssAnimation) {
