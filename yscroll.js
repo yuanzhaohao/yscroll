@@ -15,7 +15,7 @@ var win = window,
 var utils = (function (win, doc) {
   var self = this,
     div = doc.createElement('div'),
-    prefix = ['webkit'],
+    prefix = ['webkit', 'moz', 'o', 'ms'],
     saveProp = {};
 
   var ucFirst = function (str) {
@@ -495,22 +495,21 @@ YScroll.prototype = {
     };
     var timer = setInterval(function() {
       var time = +new Date() - begin;
-      var pos;
+      var pos, now;
 
       if (time > duration) {
         clearInterval(timer);
-        dist = to;
-        self._animDist = to;
+        now = to;
       }
       else {
         pos = easing(time, duration);
-        dist = pos * (to - dist) + dist;
+        now = pos * (to - dist) + dist;
       }
       if (self.vertical) {
-        elemStyle.top = dist + 'px';
+        elemStyle.top = now + 'px';
       }
       else {
-        elemStyle.left = dist + 'px';
+        elemStyle.left = now + 'px';
       }
     }, 10);
   },
