@@ -1,6 +1,6 @@
 YScroll
 =====
-> A lightweight slide module for mobile web. 高性能的无线滚动组件
+> A lightweight scroll for touch device. 高性能的无线滚动组件
 
 ## Demo & Examples
 
