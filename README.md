@@ -1,4 +1,6 @@
-## YScroll - 高性能的无线滚动组件
+YScroll
+=====
+> A lightweight slide module for mobile web. 高性能的无线滚动组件
 
 ### 使用gulp进行构建
 
