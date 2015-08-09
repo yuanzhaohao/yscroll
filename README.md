@@ -31,7 +31,15 @@ new YScroll('.fs-2', {
 });
 ```
 
-#### js animation scroll
+#### 使用js动画(snap)
+``` javascript
+new YScroll('.fs-3', {
+  distance: 220,
+  cssAnimation: false
+});
+```
+
+#### 使用js动画(scroll)
 
 ``` javascript
 new YScroll('.scroll-nav-1', {
