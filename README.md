@@ -54,7 +54,7 @@ new YScroll('.scroll-nav-1', {
 
 ``` javascript
 var srcoll = new YScroll('.scroll-nav');
-scroll.el.addEventListener('sTouchstart', function (e) {
+scroll.scroller.addEventListener('sTouchstart', function (e) {
   console.log('call sTouchstart');
 }, false);
 ```
