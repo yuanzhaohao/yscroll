@@ -57,4 +57,11 @@ var srcoll = new YScroll('.scroll-nav');
 scroll.scroller.addEventListener('sTouchstart', function (e) {
   console.log('call sTouchstart');
 }, false);
+
+var snap = new YScroll('.fs-3', {
+  distance: 220
+});
+snap.scroller.addEventListener('sPointmove', function (e) {
+  console.log('call sTouchstart');
+}, false);
 ```
