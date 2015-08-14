@@ -34,6 +34,7 @@ new YScroll('.fs-2', {
 ```
 
 #### 使用js动画(snap)
+
 ``` javascript
 new YScroll('.fs-3', {
   distance: 220,
@@ -47,4 +48,13 @@ new YScroll('.fs-3', {
 new YScroll('.scroll-nav-1', {
   cssAnimation: false
 });
+```
+
+#### 设置回调
+
+``` javascript
+var srcoll = new YScroll('.scroll-nav');
+scroll.el.addEventListener('sTouchstart', function (e) {
+  console.log('call sTouchstart');
+}, false);
 ```
