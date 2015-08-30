@@ -10,15 +10,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>Lazyload test</title>
+<link rel="stylesheet" href="lib/mocha.css">
+<style>
+#test {
+  visibility: hidden;
+}
+</style>
 </head>
 <body>
-<div id="test"></div>
+<div id="mocha"></div>
 <script src="lib/zepto.js"></script>
 <script src="lib/sinon.js"></script>
 <script src="lib/mocha.js"></script>
 <script src="lib/expect.js"></script>
 <script src="lib/setup.js"></script>
-<script src="../lazyload.js"></script>
+<script src="../yscroll.js"></script>
 <script src="tests.js"></script>
+<div id="test"></div>
 </body>
 </html>
