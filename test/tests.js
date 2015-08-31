@@ -95,4 +95,36 @@ describe('YScroll', function () {
       });
     });
   });
+
+  describe('#moveToPoint', function() {
+    context('when argument greater than maxPoint', function() {
+      it('currentPoint should change to maxPoint', function() {
+        y.moveToPoint(5);
+        expect(y.curPoint).to.be(2);
+      });
+
+      it('should fire fspointmove event', function(done) {
+        y.scroller.addEventListener('fspointmove', function() {
+          expect(y.curPoint).to.be(2);
+          done();
+        });
+        y.moveToPoint(5);
+      });
+    });
+
+    context('when argument less than 0', function() {
+      it('currentPoint should change to 0', function() {
+        y.moveToPoint(1);
+        y.moveToPoint(-1);
+        expect(y.curPoint).to.be(0);
+      });
+    });
+
+    context('when argument betoween 0 and maxPoint', function() {
+      it('should change currentPoint', function() {
+        y.moveToPoint(1);
+        expect(y.curPoint).to.be(1);
+      });
+    });
+  });
 });
