@@ -44,4 +44,32 @@ describe('YScroll', function () {
       });
     });
   });
+
+  describe('refresh', function() {
+    context('has content', function() {
+      beforeEach(function() {
+        y.refresh();
+      });
+
+      it('should reset values', function() {
+        expect(y.curPoint).to.be(0);
+        expect(y._maxPoint).to.be(2);
+        expect(y._distance).to.be(100);
+        expect(y._maxDist).to.be(-200);
+      });
+    });
+
+    context('has no content', function() {
+      beforeEach(function() {
+        $yscroll.empty();
+        y.refresh();
+      });
+      it('should reset values', function() {
+        expect(y.curPoint).to.be(-1);
+        expect(y._maxPoint).to.be(-1);
+        expect(y._distance).to.be(0);
+        expect(y._maxDist).to.be(0);
+      });
+    });
+  });
 });
