@@ -200,7 +200,7 @@ YScroll.prototype = {
     else {
       self.scroller = el;
       self.curPoint = 0;
-      self.maxPoint = el.children.length - 1;
+      self.maxPoint = opts.maxPoint !== undefined ? opts.maxPoint : el.children.length - 1;
       self.maxDist = -self.distance * (self.maxPoint - 1);
       self.bounceEasing = self.ease['elastic'];
     }

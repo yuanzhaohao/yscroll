@@ -72,4 +72,27 @@ describe('YScroll', function () {
       });
     });
   });
+
+  describe('maxPoint', function() {
+    context('when set maxPoint to 0', function() {
+      it('should set _maxPoint to 0', function() {
+        var y = Yscroll($(html).get(0), { maxPoint: 0 });
+        expect(y.maxPoint).to.be(0);
+      });
+    });
+
+    context('when set maxPoint to 1', function() {
+      it('should set _maxPoint to 1', function() {
+        var y = Yscroll($(html).get(0), { maxPoint: 1 });
+        expect(y.maxPoint).to.be(1);
+      });
+    });
+
+    context('when dont set maxPoint', function() {
+      it('should set _maxPoint to element length - 1', function() {
+        var y = Yscroll($(html).get(0));
+        expect(y.maxPoint).to.be(2);
+      });
+    });
+  });
 });
