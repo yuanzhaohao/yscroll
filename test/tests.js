@@ -1,6 +1,6 @@
 describe('YScroll', function () {
   var html =
-    '<div class="flipsnap" style="width:300px">' +
+    '<div class="yscroll" style="width:300px">' +
     '  <div style="width:100px">item1</div>' +
     '  <div style="width:100px">item2</div>' +
     '  <div style="width:100px">item3</div>' +
@@ -124,6 +124,71 @@ describe('YScroll', function () {
       it('should change currentPoint', function() {
         y.moveToPoint(1);
         expect(y.curPoint).to.be(1);
+      });
+    });
+  });
+
+  describe('yscroll Events', function() {
+    function trigger(element, eventType, params) {
+      var ev = document.createEvent('Event');
+      ev.initEvent(eventType, true, false);
+      $.extend(ev, params || {});
+      element.dispatchEvent(ev);
+    }
+
+    function moveEventTest(start, move, end) {
+      it('should move to next', function() {
+        trigger(y.scroller, start, { pageX: 50, pageY: 0 });
+        expect(y.curPoint).to.be(0);
+
+        trigger(y.scroller, move, { pageX: 40, pageY: 0 });
+        trigger(y.scroller, move, { pageX: 30, pageY: 0 });
+        expect(y.curPoint).to.be(0);
+
+        trigger(document, end);
+        expect(y.curPoint).to.be(1);
+      });
+
+      it('should move to prev', function() {
+        trigger(y.scroller, start, { pageX: 50, pageY: 0 });
+        trigger(y.scroller, move, { pageX: 40, pageY: 0 });
+        trigger(y.scroller, move, { pageX: 30, pageY: 0 });
+        trigger(document, end);
+        expect(y.curPoint).to.be(1);
+
+        trigger(y.scroller, start, { pageX: 50, pageY: 0 });
+        expect(y.curPoint).to.be(1);
+
+        trigger(y.scroller, move, { pageX: 60, pageY: 0 });
+        trigger(y.scroller, move, { pageX: 70, pageY: 0 });
+        expect(y.curPoint).to.be(1);
+
+        trigger(document, end);
+        expect(y.curPoint).to.be(0);
+      });
+    }
+
+    context('when fired touch event', function() {
+      moveEventTest('touchstart', 'touchmove', 'touchend');
+    });
+
+    context('when fired mouse event', function() {
+      moveEventTest('mousedown', 'mousemove', 'mouseup');
+    });
+
+    context('when fired touchstart and mousedown event', function() {
+      beforeEach(function() {
+        this.spy = sinon.spy(y.scroller, 'addEventListener');
+        trigger(y.scroller, 'touchstart', { pageX: 0, pageY: 0 });
+        trigger(y.scroller, 'mousedown', { pageX: 0, pageY: 0 });
+      });
+      afterEach(function() {
+        this.spy.restore();
+      });
+
+      it('move event should bind only first fired event type', function() {
+        expect(this.spy.callCount).to.be(1);
+        expect(this.spy.args[0][0]).to.be('touchmove');
       });
     });
   });
