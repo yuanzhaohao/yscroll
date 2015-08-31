@@ -190,6 +190,7 @@ YScroll.prototype = {
     self.cssAnimation = (opts.cssAnimation === undefined) ? utils.cssAnimation : opts.cssAnimation;
 
     if (self.isScroll) {
+      self.wrapper = el;
       self.scroller = el.children[0];
       self.wrapperWidth = el.clientWidth;
       self.maxDist = self.wrapperWidth - self.scroller.clientWidth;
@@ -222,6 +223,21 @@ YScroll.prototype = {
     }
     self.scroller.addEventListener(self.events.start, self, false);
     return self;
+  },
+
+  refresh: function () {
+    var self = this;
+
+    if (self.isScroll) {
+      self.wrapperWidth = self.wrapper.clientWidth;
+      self.maxDist = self.wrapperWidth - self.scroller.clientWidth;
+    }
+    else {
+      self.curPoint = 0;
+      self.maxPoint = el.children.length - 1;
+      self.maxDist = -self.distance * (self.maxPoint - 1);
+    }
+    self._setDist(0, 0);
   },
 
   handleEvent: function (e) {
