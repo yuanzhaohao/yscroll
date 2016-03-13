@@ -4,7 +4,7 @@ YScroll
 
 ## Demo & Examples
 
-Live demo: [https://github.com/yuanzhaohao/yscroll](https://github.com/yuanzhaohao/yscroll)
+Live demo: [http://yuanzhaohao.github.io/yscroll/](http://yuanzhaohao.github.io/yscroll/)
 
 To build the examples locally, run:
 
