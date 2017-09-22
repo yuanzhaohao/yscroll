@@ -1,5 +1,6 @@
 {
   "name": "yscroll",
+  "version": "0.0.3",
   "description": "高性能的滚动组件",
   "repository": {
     "type": "git",
