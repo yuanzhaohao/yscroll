@@ -1,11 +1,20 @@
 {
   "name": "yscroll",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "高性能的滚动组件",
   "repository": {
     "type": "git",
     "url": "https://github.com/yuanzhaohao/yscroll.git"
   },
+  "scripts": {
+    "start": "gulp",
+    "dev": "gulp server"
+  },
+  "main": "yscroll.js",
+  "files": [
+    "yscroll.js",
+    "yscroll.min.js"
+  ],
   "keywords": [
     "mobile",
     "scroll",
